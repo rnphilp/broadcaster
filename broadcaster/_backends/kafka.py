@@ -10,13 +10,40 @@ from .base import BroadcastBackend
 
 class KafkaBackend(BroadcastBackend):
     def __init__(self, url: str):
-        self._servers = [urlparse(url).netloc]
+        self._servers = [
+            urlparse(url).netloc
+        ]  # TODO: update to parse multiple values to a list
         self._consumer_channels: typing.Set = set()
+        self._security_protocol = os.environ.get("KAFKA_SECURITY_PROTOCOL") or "PLAIN"
+        self._sasl_mechanism = os.environ.get("KAFKA_SASL_MECHANISM")
+        self._sasl_plain_username = os.environ.get("KAFKA_PLAIN_USERNAME")
+        self._sasl_plain_password = os.environ.get("KAFKA_PLAIN_PASSWORD")
 
     async def connect(self) -> None:
+        print('******** I AM IN BROADCASTER ********')
+        print("broadcast url env var ---> ", os.environ.get("BROADCAST_URL"))
+        print("self._servers ---> ", self._servers)
+        print("self._security_protocol --->", self._security_protocol)
+        print("self._sasl_mechanism --->", self._sasl_mechanism)
+        print("self._sasl_plain_username --->", self._sasl_plain_username)
+
         loop = asyncio.get_event_loop()
-        self._producer = AIOKafkaProducer(loop=loop, bootstrap_servers=self._servers)
-        self._consumer = AIOKafkaConsumer(loop=loop, bootstrap_servers=self._servers)
+        self._producer = AIOKafkaProducer(
+            loop=loop,
+            bootstrap_servers=self._servers,
+            security_protocol=self._security_protocol,
+            sasl_mechanism=self._sasl_mechanism,
+            sasl_plain_username=self._sasl_plain_username,
+            sasl_plain_password=self._sasl_plain_password,
+        )
+        self._consumer = AIOKafkaConsumer(
+            loop=loop,
+            bootstrap_servers=self._servers,
+            security_protocol=self._security_protocol,
+            sasl_mechanism=self._sasl_mechanism,
+            sasl_plain_username=self._sasl_plain_username,
+            sasl_plain_password=self._sasl_plain_password,
+        )
         await self._producer.start()
         await self._consumer.start()
 
