@@ -20,13 +20,13 @@ class KafkaBackend(BroadcastBackend):
         self._sasl_mechanism = os.environ.get("KAFKA_SASL_MECHANISM") or "PLAIN"
         self._sasl_plain_username = os.environ.get("KAFKA_PLAIN_USERNAME")
         self._sasl_plain_password = os.environ.get("KAFKA_PLAIN_PASSWORD")
-
-    async def connect(self) -> None:
-        logging.warning('inside KafkaBackend connect()')
         logging.warning("self._servers ---> ", self._servers)
         logging.warning("self._security_protocol --->", self._security_protocol)
         logging.warning("self._sasl_mechanism --->", self._sasl_mechanism)
         logging.warning("self._sasl_plain_username --->", self._sasl_plain_username)
+
+    async def connect(self) -> None:
+        logging.warning('inside KafkaBackend connect()')
         loop = asyncio.get_event_loop()
         self._producer = AIOKafkaProducer(loop=loop, bootstrap_servers=self._servers)
         self._consumer = AIOKafkaConsumer(loop=loop, bootstrap_servers=self._servers)
