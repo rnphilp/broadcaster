@@ -23,7 +23,6 @@ class KafkaBackend(BroadcastBackend):
     async def connect(self) -> None:
         print('******** I AM IN BROADCASTER ********')
         logging.warning('******** I AM IN BROADCASTER ********')
-        logging.warning("broadcast url env var ---> ", os.environ.get("BROADCAST_URL"))
         logging.warning("self._servers ---> ", self._servers)
         logging.warning("self._security_protocol --->", self._security_protocol)
         logging.warning("self._sasl_mechanism --->", self._sasl_mechanism)
