@@ -12,7 +12,7 @@ from .base import BroadcastBackend
 
 class KafkaBackend(BroadcastBackend):
     def __init__(self, url: str):
-        logging.warning('**** test 2 ****')
+        logging.warning('**** test 3 ****')
         logging.warning('inside KafkaBackend __init__')
         self._servers = [urlparse(url).netloc]
         self._consumer_channels: typing.Set = set()
