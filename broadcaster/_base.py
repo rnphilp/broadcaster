@@ -1,3 +1,4 @@
+import logging
 import asyncio
 from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator, AsyncIterator, Dict, Optional
@@ -27,6 +28,7 @@ class Unsubscribed(Exception):
 class Broadcast:
     def __init__(self, url: str):
         print('******** I AM IN BROADCASTER BROADCAST CLASS ********')
+        logging.warning('******** I AM IN BROADCASTER BROADCAST CLASS ********')
         from broadcaster._backends.base import BroadcastBackend
 
         parsed_url = urlparse(url)
