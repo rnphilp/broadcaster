@@ -11,6 +11,8 @@ from .base import BroadcastBackend
 
 class KafkaBackend(BroadcastBackend):
     def __init__(self, url: str):
+        print('****** KafkaBackend INIT ******')
+        logging.warning('****** KafkaBackend INIT ******')
         self._servers = [
             urlparse(url).netloc
         ]  # TODO: update to parse multiple values to a list
