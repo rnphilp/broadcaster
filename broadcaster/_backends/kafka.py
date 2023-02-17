@@ -1,5 +1,6 @@
 import asyncio
 import typing
+import logging
 from urllib.parse import urlparse
 
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
@@ -15,17 +16,17 @@ class KafkaBackend(BroadcastBackend):
         ]  # TODO: update to parse multiple values to a list
         self._consumer_channels: typing.Set = set()
         self._security_protocol = os.environ.get("KAFKA_SECURITY_PROTOCOL") or "PLAIN"
-        self._sasl_mechanism = os.environ.get("KAFKA_SASL_MECHANISM")
+        self._sasl_mechanism = os.environ.get("KAFKA_SASL_MECHANISM") or "PLAIN"
         self._sasl_plain_username = os.environ.get("KAFKA_PLAIN_USERNAME")
         self._sasl_plain_password = os.environ.get("KAFKA_PLAIN_PASSWORD")
 
     async def connect(self) -> None:
-        print('******** I AM IN BROADCASTER ********')
-        print("broadcast url env var ---> ", os.environ.get("BROADCAST_URL"))
-        print("self._servers ---> ", self._servers)
-        print("self._security_protocol --->", self._security_protocol)
-        print("self._sasl_mechanism --->", self._sasl_mechanism)
-        print("self._sasl_plain_username --->", self._sasl_plain_username)
+        logging.warning('******** I AM IN BROADCASTER ********')
+        logging.warning("broadcast url env var ---> ", os.environ.get("BROADCAST_URL"))
+        logging.warning("self._servers ---> ", self._servers)
+        logging.warning("self._security_protocol --->", self._security_protocol)
+        logging.warning("self._sasl_mechanism --->", self._sasl_mechanism)
+        logging.warning("self._sasl_plain_username --->", self._sasl_plain_username)
 
         loop = asyncio.get_event_loop()
         self._producer = AIOKafkaProducer(
