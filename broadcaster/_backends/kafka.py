@@ -12,11 +12,11 @@ from .base import BroadcastBackend
 
 class KafkaBackend(BroadcastBackend):
     def __init__(self, url: str):
-        logging.warning('**** test 3 ****')
+        logging.warning('**** test 4 ****')
         logging.warning('inside KafkaBackend __init__')
         self._servers = [urlparse(url).netloc]
         self._consumer_channels: typing.Set = set()
-        logging.warning("self._servers ---> " + self._servers)
+        logging.warning(f"self._servers ---> {self._servers}")
         # self._security_protocol = os.environ.get("KAFKA_SECURITY_PROTOCOL") or "PLAIN"
         # self._sasl_mechanism = os.environ.get("KAFKA_SASL_MECHANISM") or "PLAIN"
         # self._sasl_plain_username = os.environ.get("KAFKA_PLAIN_USERNAME")
