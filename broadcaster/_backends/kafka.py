@@ -1,3 +1,4 @@
+import os
 import asyncio
 import typing
 import logging
@@ -11,9 +12,14 @@ from .base import BroadcastBackend
 
 class KafkaBackend(BroadcastBackend):
     def __init__(self, url: str):
+        logging.warning('**** test 1 ****')
         logging.warning('inside KafkaBackend __init__')
         self._servers = [urlparse(url).netloc]
         self._consumer_channels: typing.Set = set()
+        self._security_protocol = os.environ.get("KAFKA_SECURITY_PROTOCOL") or "PLAIN"
+        self._sasl_mechanism = os.environ.get("KAFKA_SASL_MECHANISM") or "PLAIN"
+        self._sasl_plain_username = os.environ.get("KAFKA_PLAIN_USERNAME")
+        self._sasl_plain_password = os.environ.get("KAFKA_PLAIN_PASSWORD")
 
     async def connect(self) -> None:
         logging.warning('inside KafkaBackend connect()')
