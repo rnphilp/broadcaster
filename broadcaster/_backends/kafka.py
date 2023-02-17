@@ -12,7 +12,7 @@ from .base import BroadcastBackend
 
 class KafkaBackend(BroadcastBackend):
     def __init__(self, url: str):
-        logging.warning('**** test 6 ****')
+        logging.warning('**** test 7 ****')
         logging.warning('inside KafkaBackend __init__')
         self._servers = [urlparse(url).netloc]
         self._consumer_channels: typing.Set = set()
@@ -33,16 +33,16 @@ class KafkaBackend(BroadcastBackend):
             bootstrap_servers=self._servers,
             # security_protocol=self._security_protocol,
             # sasl_mechanism=self._sasl_mechanism,
-            # sasl_plain_username=self._sasl_plain_username,
-            # sasl_plain_password=self._sasl_plain_password,
+            sasl_plain_username=self._sasl_plain_username,
+            sasl_plain_password=self._sasl_plain_password,
         )
         self._consumer = AIOKafkaConsumer(
             loop=loop,
             bootstrap_servers=self._servers,
             # security_protocol=self._security_protocol,
             # sasl_mechanism=self._sasl_mechanism,
-            # sasl_plain_username=self._sasl_plain_username,
-            # sasl_plain_password=self._sasl_plain_password,
+            sasl_plain_username=self._sasl_plain_username,
+            sasl_plain_password=self._sasl_plain_password,
         )
         await self._producer.start()
         await self._consumer.start()
