@@ -5,6 +5,7 @@ import logging
 from urllib.parse import urlparse
 
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
+from aiokafka.helpers import create_ssl_context
 
 from .._base import Event
 from .base import BroadcastBackend
@@ -20,6 +21,11 @@ class KafkaBackend(BroadcastBackend):
         self._sasl_mechanism = os.environ.get("KAFKA_SASL_MECHANISM") or "PLAIN"
         self._sasl_plain_username = os.environ.get("KAFKA_PLAIN_USERNAME")
         self._sasl_plain_password = os.environ.get("KAFKA_PLAIN_PASSWORD")
+        try:
+            self._ssl_context = create_ssl_context() if self._security_protocol in ["SSL", "SASL_SSL"] else None
+        except Exception as e:
+            logging.error(e)
+            raise e
 
     async def connect(self) -> None:
         logging.warning('inside KafkaBackend connect()')
@@ -33,6 +39,7 @@ class KafkaBackend(BroadcastBackend):
                 loop=loop,
                 bootstrap_servers=self._servers,
                 security_protocol=self._security_protocol,
+                ssl_context=self._ssl_context,
                 sasl_mechanism=self._sasl_mechanism,
                 sasl_plain_username=self._sasl_plain_username,
                 sasl_plain_password=self._sasl_plain_password,
@@ -41,6 +48,7 @@ class KafkaBackend(BroadcastBackend):
                 loop=loop,
                 bootstrap_servers=self._servers,
                 security_protocol=self._security_protocol,
+                ssl_context=self._ssl_context,
                 sasl_mechanism=self._sasl_mechanism,
                 sasl_plain_username=self._sasl_plain_username,
                 sasl_plain_password=self._sasl_plain_password,
