@@ -13,6 +13,7 @@ from .base import BroadcastBackend
 
 class KafkaBackend(BroadcastBackend):
     def __init__(self, url: str):
+        logging.info(f"KafkaBackend initialising")
         parsed_url = urlparse(url).netloc
         self._servers = parsed_url.split(',')
         self._consumer_channels: typing.Set = set()

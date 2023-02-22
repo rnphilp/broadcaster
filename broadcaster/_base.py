@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator, AsyncIterator, Dict, Optional
 from urllib.parse import urlparse
@@ -6,6 +7,7 @@ from urllib.parse import urlparse
 
 class Event:
     def __init__(self, channel: str, message: str) -> None:
+        logging.info("Broadcaster event initialising")
         self.channel = channel
         self.message = message
 
@@ -26,6 +28,7 @@ class Unsubscribed(Exception):
 
 class Broadcast:
     def __init__(self, url: str):
+        logging.info(f"Broadcaster Broadcast initialising with url {url}")
         from broadcaster._backends.base import BroadcastBackend
 
         parsed_url = urlparse(url)
